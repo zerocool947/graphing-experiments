@@ -1,4 +1,4 @@
-package com.poorfellow.graphing.experimental;
+package com.poorfellow.graphing.experimental.GraphStream;
 
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.implementations.SingleGraph;

@@ -1,6 +1,8 @@
 package com.poorfellow.graphing.experimental;
 
 
+import com.poorfellow.graphing.experimental.JUNG.JUNG;
+
 public class Main {
 
     public static void main(String[] args) {

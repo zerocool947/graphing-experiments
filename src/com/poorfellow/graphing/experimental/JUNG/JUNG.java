@@ -1,17 +1,18 @@
-package com.poorfellow.graphing.experimental;
+package com.poorfellow.graphing.experimental.JUNG;
 
 import edu.uci.ics.jung.algorithms.layout.CircleLayout;
 import edu.uci.ics.jung.algorithms.layout.Layout;
+import edu.uci.ics.jung.algorithms.layout.StaticLayout;
+import edu.uci.ics.jung.algorithms.layout.TreeLayout;
 import edu.uci.ics.jung.graph.Graph;
-import edu.uci.ics.jung.graph.SortedSparseMultigraph;
 import edu.uci.ics.jung.graph.SparseMultigraph;
-import edu.uci.ics.jung.samples.SimpleGraphDraw;
-import edu.uci.ics.jung.visualization.BasicVisualizationServer;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
+import edu.uci.ics.jung.visualization.control.EditingPopupGraphMousePlugin;
 import edu.uci.ics.jung.visualization.control.PickingGraphMousePlugin;
 import edu.uci.ics.jung.visualization.control.PluggableGraphMouse;
 import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
 import edu.uci.ics.jung.visualization.renderers.Renderer.VertexLabel.Position;
+import org.apache.commons.collections15.Factory;
 import org.apache.commons.collections15.Transformer;
 
 import javax.swing.JFrame;
@@ -22,7 +23,6 @@ import java.awt.Paint;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.Stroke;
-import java.awt.geom.Area;
 
 /**
  * Created by David on 11/15/2014.
@@ -30,7 +30,9 @@ import java.awt.geom.Area;
 public class JUNG {
 
     public static void execute() {
-        //SimpleGraphDraw sgd = new SimpleGraphDraw();
+        
+        //Instantiating
+        JFrame frame = new JFrame("Simple_Graph_View");
 
         //basic graph definition
         Graph<Integer, String> g = new SparseMultigraph<Integer, String>();
@@ -94,8 +96,16 @@ public class JUNG {
         //Interactive test
         PluggableGraphMouse gm = new PluggableGraphMouse();
         PickingGraphMousePlugin<Integer, String> pickingMouse = new PickingGraphMousePlugin<Integer, String>();
-        gm.add(pickingMouse);
+
+        Factory<Integer> vertexFactory = new VertexFactory(g);
+        Factory<String> edgeFactory = new EdgeFactory();
+        EditingPopupGraphMousePlugin<Integer, String> popupMouse = new EditingPopupGraphMousePlugin<Integer, String>(
+                vertexFactory, edgeFactory);
+
+
         //Assigning alterations
+        gm.add(pickingMouse);
+        gm.add(popupMouse);
         vv.setGraphMouse(gm);
         vv.getRenderContext().setVertexShapeTransformer(vertexShapeTrans);
         vv.getRenderContext().setVertexFillPaintTransformer(vertexPaint);
@@ -106,7 +116,6 @@ public class JUNG {
 
 
         //Displaying graph
-        JFrame frame = new JFrame("Simple_Graph_View");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().add(vv);
         frame.pack();
