@@ -33,7 +33,7 @@ import static org.loadui.testfx.Assertions.verifyThat;
 /**
  * Created by David on 11/30/2014.
  */
-public class JavaFXTest extends GuiTest {
+public class JavaFXViewsTest extends GuiTest {
 
     Popup helloPopup;
 
@@ -50,7 +50,6 @@ public class JavaFXTest extends GuiTest {
     public void testComboBoxSelect() {
         ComboBox comboBox = find("#demoComboBox");
         click(comboBox).click("Hello");
-
 
         assertTrue(helloPopup.isShowing());
 
