@@ -1,5 +1,6 @@
 package com.poorfellow.graphing.experimental.test;
 
+import com.poorfellow.graphing.experimental.JavaFX.WidgetUtility;
 import com.poorfellow.graphing.experimental.Main;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -36,6 +37,7 @@ import static org.loadui.testfx.Assertions.verifyThat;
 public class JavaFXViewsTest extends GuiTest {
 
     Popup helloPopup;
+    WidgetUtility widgetUtility = WidgetUtility.getInstance();
 
     @Test
     public void testButtonClick() {
@@ -58,15 +60,8 @@ public class JavaFXViewsTest extends GuiTest {
     @Override
     protected Parent getRootNode() {
         helloPopup = new Popup();
-        Button demoButton = new Button();
-        demoButton.setText("Hello World");
-        demoButton.setId("demoButton");
-        demoButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                demoButton.setText("Been Clicked");
-            }
-        });
+        Button demoButton = widgetUtility.createButtonWithTextAndId("Hello World", "demoButton");
+        widgetUtility.setButtonOnClickTextChange(demoButton, "Been Clicked");
         AnchorPane root = new AnchorPane();
 
         ObservableList<String> comboBoxOptions = FXCollections.observableArrayList("Hello", "Goodbye");
