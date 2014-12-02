@@ -4,12 +4,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Popup;
-import javafx.stage.Window;
 
 /**
  * Created by David on 11/30/2014.
@@ -18,87 +18,89 @@ public class ViewTestUtility {
 
     private static ViewTestUtility viewTestUtility;
     private Popup helloPopup;
+    private Button demoButton;
+    private ComboBox<String> demoComboBox;
+    private Pane parentPane;
+    private GridPane demoGridPane;
 
-    public static ViewTestUtility getInstance() {
-        if (viewTestUtility == null) {
-            viewTestUtility = new ViewTestUtility();
-        }
-
-        return viewTestUtility;
+    public ViewTestUtility(Pane pane) {
+        parentPane = pane;
     }
 
-    public ViewTestUtility() {
+    public Button createDemoButtonWithTextAndId(String text, String id) {
+        demoButton = new Button(text);
+        demoButton.setId(id);
+
+        return demoButton;
     }
 
-    public Button createButtonWithTextAndId(String text, String id) {
-        Button result = new Button(text);
-        result.setId(id);
-
-        return result;
-    }
-
-    public void setButtonOnClickTextChange(Button button, String text) {
-        button.setOnAction(new EventHandler<ActionEvent>() {
+    public void setDemoButtonChangeOnClickText(String text) {
+        demoButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                button.setText(text);
+                demoButton.setText(text);
             }
         });
     }
 
-    public ComboBox<String> createDemoComboBoxWithPopup(Node node) {
+    public ComboBox<String> createDemoComboBoxWithPopup() {
         ObservableList<String> comboBoxOptions = FXCollections.observableArrayList("Hello", "Goodbye");
-        ComboBox<String> comboBox = new ComboBox<String>(comboBoxOptions);
-        comboBox.setId("demoComboBox");
-        createHandlerForDemoComboBox(comboBox, node);
+        demoComboBox = new ComboBox<String>(comboBoxOptions);
+        demoComboBox.setId("demoComboBox");
+        createHandlerForDemoComboBox();
 
-        return comboBox;
+        return demoComboBox;
     }
 
-    public ComboBox<String> createDemoComboBoxWithPopup(Window window) {
-        ObservableList<String> comboBoxOptions = FXCollections.observableArrayList("Hello", "Goodbye");
-        ComboBox<String> comboBox = new ComboBox<String>(comboBoxOptions);
-        comboBox.setId("demoComboBox");
-        createHandlerForDemoComboBox(comboBox, window);
-
-        return comboBox;
-    }
-
-    public void createHandlerForDemoComboBox(ComboBox<String> comboBox, Node node) {
-        comboBox.setOnAction(new EventHandler<ActionEvent>() {
+    public void createHandlerForDemoComboBox() {
+        demoComboBox.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if (comboBox.getSelectionModel().getSelectedItem().equals("Hello")) {
-                    helloPopup = createPopupWithText("World");
-                    helloPopup.show(node, 250, 250);
+                if (demoComboBox.getSelectionModel().getSelectedItem().equals("Hello")) {
+                    createDemoPopupWithText("World");
+                    showDemoPopup();
                 }
             }
         });
     }
 
-    public void createHandlerForDemoComboBox(ComboBox<String> comboBox, Window window) {
-        comboBox.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if (comboBox.getSelectionModel().getSelectedItem().equals("Hello")) {
-                    helloPopup = createPopupWithText("World");
-                    helloPopup.show(window, 250, 250);
-                }
-            }
-        });
+    private void showDemoPopup() {
+        helloPopup.show(parentPane, 250, 250);
     }
 
-    public Popup createPopupWithText(String text) {
-        Popup popup = new Popup();
+    public Popup createDemoPopupWithText(String text) {
+        helloPopup = new Popup();
         Text popupText = new Text();
         popupText.setText("World");
-        popup.getContent().add(popupText);
+        helloPopup.getContent().add(popupText);
 
-        return popup;
+        return helloPopup;
     }
 
     public boolean isHelloPopupShowing() {
         return helloPopup.isShowing();
+    }
+
+    public GridPane createAndAssembleDemoGridPane() {
+        demoGridPane = new GridPane();
+        demoGridPane.setVgap(4);
+        demoGridPane.setHgap(10);
+        assembleGridPane();
+
+        return demoGridPane;
+    }
+
+    public void assembleGridPane() {
+        demoGridPane.add(demoButton, 1, 1);
+        demoGridPane.add(demoComboBox, 1, 2);
+    }
+
+    public void addDemoGridPaneToRootPane() {
+        parentPane.getChildren().addAll(demoGridPane);
+    }
+
+    public Pane getRoot() {
+        return parentPane;
     }
 
 }

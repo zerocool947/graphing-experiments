@@ -74,7 +74,6 @@ public class Main extends Application {
         primaryStage.setTitle("Dummy Test");
         primaryStage.setScene(scene);
         primaryStage.show();
-        System.out.println("Primary stage is showing? " + primaryStage.isShowing());
 
     }
 

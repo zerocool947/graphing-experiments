@@ -1,17 +1,22 @@
 package com.poorfellow.graphing.experimental.test;
 
 import com.poorfellow.graphing.experimental.JavaFX.ViewTestUtility;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Popup;
+import org.junit.After;
 import org.junit.Test;
 import org.loadui.testfx.GuiTest;
+
+import java.util.Set;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.loadui.testfx.Assertions.assertNodeExists;
 import static org.loadui.testfx.Assertions.verifyThat;
@@ -21,7 +26,7 @@ import static org.loadui.testfx.Assertions.verifyThat;
  */
 public class JavaFXViewsTest extends GuiTest {
 
-    ViewTestUtility viewTestUtility = ViewTestUtility.getInstance();
+    ViewTestUtility viewTestUtility;
 
     @Test
     public void testButtonClick() {
@@ -38,25 +43,18 @@ public class JavaFXViewsTest extends GuiTest {
         click(comboBox).click("Hello");
 
         assertTrue(viewTestUtility.isHelloPopupShowing());
-
     }
 
     @Override
     protected Parent getRootNode() {
-        Button demoButton = viewTestUtility.createButtonWithTextAndId("Hello World", "demoButton");
-        viewTestUtility.setButtonOnClickTextChange(demoButton, "Been Clicked");
         AnchorPane root = new AnchorPane();
+        viewTestUtility = new ViewTestUtility(root);
+        viewTestUtility.createDemoButtonWithTextAndId("Hello World", "demoButton");
+        viewTestUtility.setDemoButtonChangeOnClickText("Been Clicked");
+        viewTestUtility.createDemoComboBoxWithPopup();
 
-        ComboBox<String> comboBox = viewTestUtility.createDemoComboBoxWithPopup(root);
-
-        GridPane grid = new GridPane();
-        grid.setVgap(4);
-        grid.setHgap(10);
-        grid.add(demoButton, 1, 1);
-        grid.add(comboBox, 1, 2);
-
-
-        root.getChildren().addAll(grid);
+        viewTestUtility.createAndAssembleDemoGridPane();
+        viewTestUtility.addDemoGridPaneToRootPane();
 
         return root;
     }
