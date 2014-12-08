@@ -8,8 +8,16 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import org.junit.After;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.loadui.testfx.GuiTest;
+import org.testfx.api.FxRobot;
+import org.testfx.api.FxService;
+import org.testfx.api.FxToolkit;
+import org.testfx.api.FxToolkitContext;
+import org.testfx.service.finder.NodeFinder;
+import org.testfx.util.WaitForAsyncUtils;
 
 import java.util.Set;
 
@@ -24,29 +32,54 @@ import static org.loadui.testfx.Assertions.verifyThat;
 /**
  * Created by David on 11/30/2014.
  */
-public class JavaFXViewsTest extends GuiTest {
+public class JavaFXViewsTest {
 
-    ViewTestUtility viewTestUtility;
+    private static ViewTestUtility viewTestUtility;
+    private static FxRobot fxRobot;
+    private static NodeFinder nodeFinder;
+
+    @BeforeClass
+    public static void setUpFactories() throws Exception {
+        System.out.println("Attempting to Set up the view test");
+        fxRobot = new FxRobot();
+        nodeFinder = FxService.serviceContext().getNodeFinder();
+
+        fxRobot.target(FxToolkit.registerPrimaryStage());
+        System.out.println("Primary stage registered");
+        System.out.println("My Stage Name is " + FxToolkit.toolkitContext().getTargetStage().getTitle());
+        FxToolkit.setupStage((stage) -> {
+            stage.show();
+            stage.toBack();
+            stage.toFront();
+        });
+        System.out.println("Primary stage setup");
+        FxToolkit.setupSceneRoot(() -> {
+                    return getRootNode();
+                }
+        );
+        System.out.println("Scene root setup");
+        System.out.println("Test established, waiting for FX events");
+        WaitForAsyncUtils.waitForFxEvents();
+    }
 
     @Test
     public void testButtonClick() {
-        Button btn = find("#demoButton");
-        click(btn);
+        Button btn = (Button) nodeFinder.node("#demoButton");
+        fxRobot.clickOn(btn);
         String postClickText = btn.getText();
         verifyThat("Been Clicked", is(postClickText));
-        //assertNodeExists("demoButton");
+        assertNodeExists("#demoButton");
     }
 
     @Test
     public void testComboBoxSelect() {
-        ComboBox comboBox = find("#demoComboBox");
-        click(comboBox).click("Hello");
+        ComboBox comboBox = (ComboBox) nodeFinder.node("#demoComboBox");
+        fxRobot.clickOn(comboBox).clickOn("Hello");
 
         assertTrue(viewTestUtility.isHelloPopupShowing());
     }
 
-    @Override
-    protected Parent getRootNode() {
+    public static Parent getRootNode() {
         AnchorPane root = new AnchorPane();
         viewTestUtility = new ViewTestUtility(root);
         viewTestUtility.createDemoButtonWithTextAndId("Hello World", "demoButton");
