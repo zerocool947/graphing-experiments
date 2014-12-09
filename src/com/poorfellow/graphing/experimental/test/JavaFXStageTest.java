@@ -33,7 +33,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class JavaFXStageTest {
 
-    private Stage stage;
+    private static Stage stage;
     private static FxRobot fxRobot;
     private static NodeFinder nodeFinder;
 
@@ -42,16 +42,17 @@ public class JavaFXStageTest {
         fxRobot = new FxRobot();
         nodeFinder = FxService.serviceContext().getNodeFinder();
         FxToolkit.registerPrimaryStage();
+
         fxRobot.target(FxToolkit.registerTargetStage(() -> {
-                    Stage stage = new Stage();
+                    stage = new Stage();
                     stage.setTitle("Demo Stage");
                     return stage;
                 }
         ));
-        FxToolkit.setupStage((stage) -> {
-            stage.show();
-            stage.toBack();
-            stage.toFront();
+        FxToolkit.setupStage((stageSetUp) -> {
+            stageSetUp.show();
+            stageSetUp.toBack();
+            stageSetUp.toFront();
         });
         WaitForAsyncUtils.waitForFxEvents();
     }
@@ -59,11 +60,7 @@ public class JavaFXStageTest {
     //Causes FXViewsTest to hang on setting stage or scene root
     @AfterClass
     public static void teardown() throws Exception {
-        WaitForAsyncUtils.asyncFx(() -> {
-                    Stage stage = (Stage) FxService.serviceContext().getWindowFinder().target();
-                    stage.close();
-            }
-        );
+        Platform.runLater(() -> ((Stage)FxService.serviceContext().getWindowFinder().target()).close());
     }
 
 
