@@ -24,6 +24,7 @@ import org.testfx.util.WaitForAsyncUtils;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeoutException;
 
+import static java.lang.Thread.sleep;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -54,13 +55,13 @@ public class JavaFXStageTest {
             stageSetUp.toBack();
             stageSetUp.toFront();
         });
-        WaitForAsyncUtils.waitForFxEvents();
     }
 
     //Causes FXViewsTest to hang on setting stage or scene root
     @AfterClass
     public static void teardown() throws Exception {
-        Platform.runLater(() -> ((Stage)FxService.serviceContext().getWindowFinder().target()).close());
+        sleep(10000);//workaround for deadlock, see TestFX issue#173
+        FxToolkit.setupStage((testStage) -> testStage.close());
     }
 
 
