@@ -1,6 +1,7 @@
 package com.poorfellow.graphing.experimental.JavaFX;
 
 import javafx.application.Platform;
+import javafx.geometry.Bounds;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;

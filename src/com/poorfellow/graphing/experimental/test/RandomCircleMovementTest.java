@@ -70,7 +70,6 @@ public class RandomCircleMovementTest {
     @Test
     public void testCircleFullyInScene() throws Exception {
         Circle circle = findCircle();
-        sleep(1000);
         int i = 0;
 
         while (i < 100) {
