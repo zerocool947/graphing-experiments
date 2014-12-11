@@ -1,4 +1,4 @@
-package main.java.com.poorfellow.graphing.experimental.JavaFX;
+package com.poorfellow.graphing.experimental.JavaFX;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

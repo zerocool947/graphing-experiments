@@ -1,6 +1,6 @@
-package test.java.com.poorfellow.graphing.experimental.test;
+package com.poorfellow.graphing.experimental;
 
-import main.java.com.poorfellow.graphing.experimental.JavaFX.RandomCircleMovementView;
+import com.poorfellow.graphing.experimental.JavaFX.RandomCircleMovementView;
 import javafx.scene.*;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
@@ -32,10 +32,12 @@ public class RandomCircleMovementTest {
 
     private static final int SCENE_WIDTH = 500;
     private static final int SCENE_HEIGHT = 500;
+    private static final double RADIUS = 15.0;
 
     @BeforeClass
     public static void setupScene() throws Exception {
         circleView = new RandomCircleMovementView();
+        circleView.setRadius(RADIUS);
 
         fxRobot = new FxRobot();
         nodeFinder = FxService.serviceContext().getNodeFinder();
@@ -56,11 +58,6 @@ public class RandomCircleMovementTest {
         System.out.println("Primary stage setup");
     }
 
-    @Before
-    public void positionScene() {
-        circleView.positionCircleRandomly();
-    }
-
     @Test
     public void testCircleExists() throws Exception {
         Circle circle = findCircle();
@@ -72,7 +69,7 @@ public class RandomCircleMovementTest {
         Circle circle = findCircle();
         int i = 0;
 
-        while (i < 100) {
+        while (i < 75) {
             double centerX = circle.getCenterX();
             double centerY = circle.getCenterY();
             double radius = circle.getRadius();
@@ -82,10 +79,27 @@ public class RandomCircleMovementTest {
             assertTrue((centerY - radius) >= 0);
             assertTrue((centerY + radius) <= primaryStage.getHeight());
 
-            circleView.positionCircleRandomly();
+            fxRobot.clickOn(circle);
             WaitForAsyncUtils.waitForFxEvents();
             i++;
         }
+    }
+
+    @Test
+    public void testCircleClickAndReposition() {
+        Circle circle = findCircle();
+        double startingX = circle.getCenterX();
+        double startingY = circle.getCenterY();
+
+        fxRobot.clickOn(circle);
+        WaitForAsyncUtils.waitForFxEvents();
+
+        double endingX = circle.getCenterX();
+        double endingY = circle.getCenterY();
+
+        assertTrue(startingX != endingX);
+        assertTrue(startingY != endingY);
+
     }
 
     private Circle findCircle() {

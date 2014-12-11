@@ -1,9 +1,11 @@
-package main.java.com.poorfellow.graphing.experimental.JavaFX;
+package com.poorfellow.graphing.experimental.JavaFX;
 
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -22,6 +24,7 @@ public class RandomCircleMovementView {
     private Scene scene;
     private Circle movingCircle;
     private AnchorPane pane;
+    private double radius = 15.0;
 
     public RandomCircleMovementView() {
 
@@ -30,15 +33,31 @@ public class RandomCircleMovementView {
     public Parent setupLayout() {
         root = new Group();
         pane = new AnchorPane(root);
-        movingCircle = new Circle(150, Color.CADETBLUE);
+        movingCircle = new Circle(radius, Color.CADETBLUE);
         movingCircle.setId(CIRCLE_ID);
+
+        setMovingCircleOnClickEvent(movingCircle);
 
         root.getChildren().add(movingCircle);
 
+        Platform.runLater(() -> {
+            positionCircleRandomly();
+        });
         return pane;
     }
 
-    public void positionCircleRandomly() {
+    private void setMovingCircleOnClickEvent(Circle circle) {
+        circle.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                circle.setVisible(false);
+                positionCircleRandomly();
+                circle.setVisible(true);
+            }
+        });
+    }
+
+    private void positionCircleRandomly() {
         Random r = new Random();
         double xPosition = r.nextDouble() * borderXBound() + widthBorderMin();
         double yPosition = r.nextDouble() * borderYBound() + heightBorderMin();
@@ -74,5 +93,9 @@ public class RandomCircleMovementView {
     private double widthBorderMin() {
         //Want the border to be exclusive, have to shift to account for Random inclusive lower
         return movingCircle.getRadius() + 1;
+    }
+
+    public void setRadius(double radius) {
+        this.radius = radius;
     }
 }

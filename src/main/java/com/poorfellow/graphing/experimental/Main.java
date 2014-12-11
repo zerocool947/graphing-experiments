@@ -1,4 +1,4 @@
-package main.java.com.poorfellow.graphing.experimental;
+package com.poorfellow.graphing.experimental;
 
 
 import javafx.application.Application;

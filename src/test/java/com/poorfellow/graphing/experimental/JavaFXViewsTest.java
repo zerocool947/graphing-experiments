@@ -1,6 +1,6 @@
-package test.java.com.poorfellow.graphing.experimental.test;
+package com.poorfellow.graphing.experimental;
 
-import main.java.com.poorfellow.graphing.experimental.JavaFX.ViewTestUtility;
+import com.poorfellow.graphing.experimental.JavaFX.ViewTestUtility;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
