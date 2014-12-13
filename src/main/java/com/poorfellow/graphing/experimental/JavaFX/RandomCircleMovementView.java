@@ -46,6 +46,12 @@ public class RandomCircleMovementView {
         return pane;
     }
 
+
+    public void setRadiusAndRedraw(double radius) {
+        setRadius(radius);
+        positionCircleRandomly();
+    }
+
     private void setMovingCircleOnClickEvent(Circle circle) {
         circle.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -59,12 +65,25 @@ public class RandomCircleMovementView {
 
     private void positionCircleRandomly() {
         Random r = new Random();
+
         double xPosition = r.nextDouble() * borderXBound() + widthBorderMin();
         double yPosition = r.nextDouble() * borderYBound() + heightBorderMin();
+
+        verifyCircleIsContainedInWindow(xPosition, yPosition);
+
         Platform.runLater(() -> {
             movingCircle.setCenterX(xPosition);
             movingCircle.setCenterY(yPosition);
         });
+    }
+
+    private void verifyCircleIsContainedInWindow(double xPosition, double yPosition) {
+        if (xPosition + radius >= pane.getWidth() ||
+                xPosition - radius <= 0 ||
+                yPosition + radius >= pane.getHeight() ||
+                yPosition - radius <= 0) {
+            throw new RuntimeException("Cricle falls outside of window");
+        }
     }
 
     private double borderYBound() {

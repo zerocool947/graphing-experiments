@@ -33,6 +33,7 @@ public class RandomCircleMovementTest {
     private static final int SCENE_WIDTH = 500;
     private static final int SCENE_HEIGHT = 500;
     private static final double RADIUS = 15.0;
+    private static final double LARGE_RADIUS = 255; //dependent on scene_height and width
 
     @BeforeClass
     public static void setupScene() throws Exception {
@@ -69,7 +70,7 @@ public class RandomCircleMovementTest {
         Circle circle = findCircle();
         int i = 0;
 
-        while (i < 75) {
+        while (i < 20) {
             double centerX = circle.getCenterX();
             double centerY = circle.getCenterY();
             double radius = circle.getRadius();
@@ -99,7 +100,11 @@ public class RandomCircleMovementTest {
 
         assertTrue(startingX != endingX);
         assertTrue(startingY != endingY);
+    }
 
+    @Test (expected = Exception.class)
+    public void testCircleTooLarge() {
+        circleView.setRadiusAndRedraw(LARGE_RADIUS);
     }
 
     private Circle findCircle() {

@@ -17,13 +17,10 @@ import org.testfx.api.FxToolkitContext;
 import org.testfx.service.finder.NodeFinder;
 import org.testfx.util.WaitForAsyncUtils;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.loadui.testfx.Assertions.assertNodeExists;
-import static org.loadui.testfx.Assertions.verifyThat;
+import static org.junit.Assert.*;
+import static org.loadui.testfx.Assertions.*;
 
 /**
  * Created by David on 11/30/2014.

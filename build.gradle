@@ -11,6 +11,8 @@ repositories {
 }
 
 dependencies {
+    compile "eu.mihosoft.vrl.workflow-8.0:vworkflows-core:0.1-r2-SNAPSHOT"
+    compile "eu.mihosoft.vrl.workflow-8.0:vworkflows-fx:0.1-r2-SNAPSHOT"
     testCompile "org.testfx:testfx-core:4.0.0-SNAPSHOT"
     testCompile group: 'junit', name: 'junit', version: '4.+'
 }
