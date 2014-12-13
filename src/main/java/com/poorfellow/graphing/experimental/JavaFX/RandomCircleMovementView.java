@@ -79,9 +79,9 @@ public class RandomCircleMovementView {
 
     private void verifyCircleIsContainedInWindow(double xPosition, double yPosition) {
         if (xPosition + radius >= pane.getWidth() ||
-                xPosition - radius <= 0 ||
-                yPosition + radius >= pane.getHeight() ||
-                yPosition - radius <= 0) {
+            xPosition - radius <= 0 ||
+            yPosition + radius >= pane.getHeight() ||
+            yPosition - radius <= 0) {
             throw new RuntimeException("Cricle falls outside of window");
         }
     }
