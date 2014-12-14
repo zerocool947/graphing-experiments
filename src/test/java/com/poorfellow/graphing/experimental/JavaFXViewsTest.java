@@ -31,7 +31,7 @@ public class JavaFXViewsTest {
     private static Stage primaryStage;
 
     @BeforeClass
-    public static void setUpFactories() throws Exception {
+    public static void setupTest() throws Exception {
         System.out.println("Attempting to Set up the view test");
         fxRobot = new FxRobot();
         nodeFinder = FxService.serviceContext().getNodeFinder();

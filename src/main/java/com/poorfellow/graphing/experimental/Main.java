@@ -1,6 +1,7 @@
 package com.poorfellow.graphing.experimental;
 
 
+import com.poorfellow.graphing.experimental.JavaFX.workflow.BasicWorkflowViewManager;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,8 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
-import javafx.stage.Popup;
-import javafx.stage.Stage;
+import javafx.stage.*;
 
 import java.io.IOException;
 
@@ -42,8 +42,14 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        dynamicComboBoxCreation(primaryStage);
-        //fxmlComboBoxCreation(primaryStage);
+        BasicWorkflowViewManager workflowView = new BasicWorkflowViewManager();
+        Scene scene = new Scene(workflowView.setupFlows(), 800, 800);
+        workflowView.addNodeWithTitle("FirstNode");
+        workflowView.addNodeWithTitle("SecondNode");
+
+        primaryStage.initStyle(StageStyle.DECORATED);
+        primaryStage.setScene(scene);
+        primaryStage.show();
 
     }
 
