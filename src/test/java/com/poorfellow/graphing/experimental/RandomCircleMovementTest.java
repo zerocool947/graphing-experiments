@@ -1,14 +1,13 @@
 package com.poorfellow.graphing.experimental;
 
 import com.poorfellow.graphing.experimental.JavaFX.RandomCircleMovementView;
+import com.sun.javafx.tk.Toolkit;
+import javafx.application.Platform;
 import javafx.scene.*;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 import org.testfx.api.FxRobot;
 import org.testfx.api.FxService;
 import org.testfx.api.FxToolkit;
@@ -47,16 +46,22 @@ public class RandomCircleMovementTest {
         System.out.println("Primary stage registered");
         System.out.println("My Stage Name is " + FxToolkit.toolkitContext().getTargetStage().getTitle());
         FxToolkit.setupStage((stage) -> {
-            stage.initStyle(StageStyle.DECORATED);
+            //stage.initStyle(StageStyle.DECORATED); //this breaks tests
             stage.show();
             stage.toBack();
             stage.toFront();
         });
+        System.out.println("Primary stage setup");
         FxToolkit.setupScene(() -> {
             Scene scene = new Scene(circleView.setupLayout(), SCENE_WIDTH, SCENE_HEIGHT);
             return scene;
         });
-        System.out.println("Primary stage setup");
+    }
+
+    @AfterClass
+    public static void teardownStage() throws Exception {
+        Toolkit.getToolkit().defer(() -> {});
+        Platform.runLater(primaryStage::close);
     }
 
     @Test

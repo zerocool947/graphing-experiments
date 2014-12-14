@@ -1,5 +1,6 @@
 package test.java.com.poorfellow.graphing.experimental.test;
 
+import com.sun.javafx.tk.Toolkit;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
 import org.junit.After;
@@ -51,8 +52,9 @@ public class JavaFXStageTest {
 
     //Causes FXViewsTest to hang on setting stage or scene root
     @AfterClass
-    public static void teardown() throws Exception {
+    public static void teardownStage() throws Exception {
         sleep(1000);//workaround for deadlock, see TestFX issue#173
+        Toolkit.getToolkit().defer(() -> {});
         FxToolkit.setupStage((testStage) -> testStage.close());
     }
 

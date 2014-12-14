@@ -1,19 +1,17 @@
 package com.poorfellow.graphing.experimental;
 
 import com.poorfellow.graphing.experimental.JavaFX.ViewTestUtility;
+import com.sun.javafx.tk.Toolkit;
+import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.AnchorPane;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.loadui.testfx.GuiTest;
+import javafx.stage.Stage;
+import org.junit.*;
 import org.testfx.api.FxRobot;
 import org.testfx.api.FxService;
 import org.testfx.api.FxToolkit;
-import org.testfx.api.FxToolkitContext;
 import org.testfx.service.finder.NodeFinder;
 import org.testfx.util.WaitForAsyncUtils;
 
@@ -30,6 +28,7 @@ public class JavaFXViewsTest {
     private static ViewTestUtility viewTestUtility;
     private static FxRobot fxRobot;
     private static NodeFinder nodeFinder;
+    private static Stage primaryStage;
 
     @BeforeClass
     public static void setUpFactories() throws Exception {
@@ -37,15 +36,16 @@ public class JavaFXViewsTest {
         fxRobot = new FxRobot();
         nodeFinder = FxService.serviceContext().getNodeFinder();
 
-        fxRobot.target(FxToolkit.registerPrimaryStage());
-        System.out.println("Primary stage registered");
+        primaryStage = FxToolkit.registerPrimaryStage();
+        fxRobot.target(primaryStage);
+        System.out.println("Primary primaryStage registered");
         System.out.println("My Stage Name is " + FxToolkit.toolkitContext().getTargetStage().getTitle());
         FxToolkit.setupStage((stage) -> {
             stage.show();
             stage.toBack();
             stage.toFront();
         });
-        System.out.println("Primary stage setup");
+        System.out.println("Primary primaryStage setup");
         FxToolkit.setupSceneRoot(() -> {
                     return getRootNode();
                 }
@@ -53,6 +53,12 @@ public class JavaFXViewsTest {
         System.out.println("Scene root setup");
         System.out.println("Test established, waiting for FX events");
         WaitForAsyncUtils.waitForFxEvents();
+    }
+
+    @AfterClass
+    public static void teardownStage() throws Exception {
+        Toolkit.getToolkit().defer(() -> {});
+        Platform.runLater(primaryStage::close);
     }
 
     @Test
