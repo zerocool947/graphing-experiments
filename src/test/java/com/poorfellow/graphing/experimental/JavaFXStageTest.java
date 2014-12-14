@@ -1,21 +1,16 @@
-package test.java.com.poorfellow.graphing.experimental.test;
+package com.poorfellow.graphing.experimental;
 
 import com.sun.javafx.tk.Toolkit;
+import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
-import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.loadui.testfx.GuiTest;
 import org.testfx.api.FxRobot;
 import org.testfx.api.FxService;
 import org.testfx.api.FxToolkit;
 import org.testfx.service.finder.NodeFinder;
-import org.testfx.util.WaitForAsyncUtils;
 
 import static java.lang.Thread.sleep;
 import static org.junit.Assert.assertEquals;
@@ -27,7 +22,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class JavaFXStageTest {
 
-    private static Stage stage;
+    private static Stage targetStage;
     private static FxRobot fxRobot;
     private static NodeFinder nodeFinder;
 
@@ -38,9 +33,9 @@ public class JavaFXStageTest {
         FxToolkit.registerPrimaryStage();
 
         fxRobot.target(FxToolkit.registerTargetStage(() -> {
-                    stage = new Stage();
-                    stage.setTitle("Demo Stage");
-                    return stage;
+                    targetStage = new Stage();
+                    targetStage.setTitle("Demo Stage");
+                    return targetStage;
                 }
         ));
         FxToolkit.setupStage((stageSetUp) -> {
@@ -50,13 +45,13 @@ public class JavaFXStageTest {
         });
     }
 
-    //Causes FXViewsTest to hang on setting stage or scene root
+    //Causes FXViewsTest to hang on setting targetStage or scene root
     @AfterClass
     public static void teardownStage() throws Exception {
-        sleep(1000);//workaround for deadlock, see TestFX issue#173
         Toolkit.getToolkit().defer(() -> {});
-        FxToolkit.setupStage((testStage) -> testStage.close());
+        Platform.runLater(targetStage::close);
     }
+
 
 
     @Test
@@ -72,7 +67,7 @@ public class JavaFXStageTest {
     }
 
     protected Parent getRootNode() {
-        stage = new Stage();
+        targetStage = new Stage();
         return null;
     }
 }
