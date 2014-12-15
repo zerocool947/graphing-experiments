@@ -65,9 +65,4 @@ public class JavaFXStageTest {
         Stage stage = (Stage) FxService.serviceContext().getWindowFinder().target();
         assertEquals("Demo Stage", stage.getTitle());
     }
-
-    protected Parent getRootNode() {
-        targetStage = new Stage();
-        return null;
-    }
 }

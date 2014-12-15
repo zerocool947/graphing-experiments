@@ -5,11 +5,15 @@ import com.sun.javafx.tk.Toolkit;
 import eu.mihosoft.vrl.workflow.VNode;
 import javafx.application.Platform;
 import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import jfxtras.labs.scene.layout.ScalableContentPane;
 import org.junit.*;
 import org.testfx.api.*;
 import org.testfx.service.finder.NodeFinder;
+import org.testfx.service.finder.WindowFinder;
 import org.testfx.util.WaitForAsyncUtils;
 
 import java.util.List;
@@ -26,11 +30,13 @@ public class DisplayWorkflowTest {
     private static NodeFinder nodeFinder;
     private static BasicWorkflowViewManager basicWorkflowView;
     private static Stage primaryStage;
+    private static WindowFinder windowFinder;
 
     @BeforeClass
     public static void setupTest() throws Exception {
         fxRobot = new FxRobot();
         nodeFinder = FxService.serviceContext().getNodeFinder();
+        windowFinder = FxService.serviceContext().getWindowFinder();
         basicWorkflowView = new BasicWorkflowViewManager();
 
         primaryStage = FxToolkit.registerPrimaryStage();
@@ -110,4 +116,19 @@ public class DisplayWorkflowTest {
         assertTrue((node1.getX() != node2.getX()) || node1.getY() != node2.getY());
     }
 
+    @Test
+    public void testBorderLayoutCenter() throws Exception {
+        BorderPane borderPane = getBorderPaneFromWindow();
+        assertNotNull(borderPane.getCenter());
+    }
+
+    @Test
+    public void testBorderLayerBottom() {
+        BorderPane borderPane = getBorderPaneFromWindow();
+        assertNotNull(borderPane.getBottom());
+    }
+
+    private BorderPane getBorderPaneFromWindow() {
+        return (BorderPane)windowFinder.target().getScene().getRoot();
+    }
 }

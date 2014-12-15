@@ -3,7 +3,12 @@ package com.poorfellow.graphing.experimental.JavaFX.workflow;
 import eu.mihosoft.vrl.workflow.*;
 import eu.mihosoft.vrl.workflow.fx.FXSkinFactory;
 import javafx.application.Platform;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import jfxtras.labs.scene.layout.ScalableContentPane;
 
 import java.util.List;
@@ -26,17 +31,41 @@ public class BasicWorkflowViewManager {
 
     public Parent setupFlows() {
         ScalableContentPane canvas = new ScalableContentPane();
+        canvas.setStyle("-fx-background-color: #F1F0FF");
+        BorderPane borderPane = new BorderPane();
+        borderPane.setCenter(canvas);
+        borderPane.setBottom(createHBox());
 
         FXSkinFactory fxSkinFactory = new FXSkinFactory(canvas.getContentPane());
         flow.setSkinFactories(fxSkinFactory);
-        
-        return canvas;
+
+        return borderPane;
+    }
+
+    private Node createHBox() {
+        HBox hbox = new HBox();
+        hbox.setPadding(new Insets(20));
+        hbox.setSpacing(10);
+        hbox.setStyle("-fx-background-color: #443266");
+
+        Button createNode = new Button("Create Node");
+        createNode.setPrefSize(100, 20);
+
+        hbox.getChildren().addAll(createNode);
+
+        return hbox;
     }
 
     public void addNodeWithId(String id) {
-        VNode n = flow.newNode();
+        VNode n = createNode();
         n.setId(id);
         positionNode(n);
+    }
+
+    private VNode createNode() {
+        VNode n = flow.newNode();
+
+        return n;
     }
 
     public VNode getNodeById(String id) {
@@ -44,7 +73,7 @@ public class BasicWorkflowViewManager {
     }
 
     public VNode addNodeWithTitle(String title) {
-        VNode n = flow.newNode();
+        VNode n = createNode();
         n.setTitle(title);
         positionNode(n);
         return n;
