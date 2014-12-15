@@ -121,7 +121,7 @@ public class DisplayWorkflowTest {
     }
 
     @Test
-    public void testBorderLayerBottom() {
+    public void testBorderLayoutBottom() {
         BorderPane borderPane = getBorderPaneFromWindow();
         assertNotNull(borderPane.getBottom());
     }
