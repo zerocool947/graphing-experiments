@@ -6,10 +6,8 @@ import eu.mihosoft.vrl.workflow.VNode;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import jfxtras.labs.scene.layout.ScalableContentPane;
 import org.junit.*;
 import org.testfx.api.*;
 import org.testfx.service.finder.NodeFinder;
@@ -50,7 +48,7 @@ public class DisplayWorkflowTest {
         });
 
         FxToolkit.setupScene(() -> {
-            return new Scene(basicWorkflowView.setupFlows(), 800, 800);
+            return new Scene(basicWorkflowView.setupRoot(), 800, 800);
         });
     }
 

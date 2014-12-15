@@ -7,9 +7,8 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import jfxtras.labs.scene.layout.ScalableContentPane;
+import javafx.scene.layout.*;
+import jfxtras.scene.layout.HBox;
 
 import java.util.List;
 
@@ -21,37 +20,38 @@ public class BasicWorkflowViewManager {
     private static VFlow flow;
     private final int gridGap;
     private final int nodesPerRow;
+    private final BorderPane borderPane;
 
     public BasicWorkflowViewManager() {
         flow = FlowFactory.newFlow();
         flow.setVisible(true);
         gridGap = 30;
         nodesPerRow = 2;
+        borderPane = new BorderPane();
     }
 
-    public Parent setupFlows() {
-        ScalableContentPane canvas = new ScalableContentPane();
-        canvas.setStyle("-fx-background-color: #F1F0FF");
-        BorderPane borderPane = new BorderPane();
-        borderPane.setCenter(canvas);
-        borderPane.setBottom(createHBox());
-
-        FXSkinFactory fxSkinFactory = new FXSkinFactory(canvas.getContentPane());
+    public Parent setupRoot() {
+        FXSkinFactory fxSkinFactory = new FXSkinFactory(setupParentWithCanvas());
         flow.setSkinFactories(fxSkinFactory);
 
         return borderPane;
     }
 
+    private AnchorPane setupParentWithCanvas() {
+        AnchorPane canvas = new AnchorPane();
+        canvas.setStyle("-fx-background-color: #F1F0FF");
+        borderPane.setCenter(canvas);
+        borderPane.setBottom(createHBox());
+
+        return canvas;
+    }
+
     private Node createHBox() {
-        HBox hbox = new HBox();
+        HBox hbox = new HBox(5.0);
+        hbox.add(new Button("Create Node"));
         hbox.setPadding(new Insets(20));
         hbox.setSpacing(10);
         hbox.setStyle("-fx-background-color: #443266");
-
-        Button createNode = new Button("Create Node");
-        createNode.setPrefSize(100, 20);
-
-        hbox.getChildren().addAll(createNode);
 
         return hbox;
     }

@@ -43,7 +43,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         BasicWorkflowViewManager workflowView = new BasicWorkflowViewManager();
-        Scene scene = new Scene(workflowView.setupFlows(), 800, 800);
+        Scene scene = new Scene(workflowView.setupRoot(), 800, 800);
         workflowView.addNodeWithTitle("FirstNode");
         workflowView.addNodeWithTitle("SecondNode");
 
